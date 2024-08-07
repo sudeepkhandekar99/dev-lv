@@ -1,0 +1,32 @@
+{
+  "id": "Why",
+  "title": "Why Choose Us?",
+  "description": "Reasons You Need To Invest",
+
+  "stones": [
+    {
+      "number": "Productive",
+      "text": "Manufacturing and other production processes that are automated enhance production rates by providing more output for the same amount of manpower input and effort."
+    },
+    {
+      "number": "Flexibile",
+      "text":"Using various automation equipment, the process is handled simply and without creating a complex environment, which is especially important in manufacturing processes."
+    },
+    {
+      "number": "Safe",
+      "text":"Industrial automation reduces the complexity of operating equipment or processes. It elevates the operator’s position from that of an operator to that of a supervisor position."
+    },
+    {
+      "number": "Automate",
+      "text": "In some critical applications, periodic checking of the process variable is necessary to perform industrial operations. Automation equipment reduces periodic or manual operations and establishes automatic working conditions."
+    },
+    {
+      "number": "Cost",
+      "text":"The use of automated devices and equipment reduces the need for human intervention in process control. This lowers the investment in manpower and, as a result, the production cost."
+    },
+    {
+      "number": "Quality",
+      "text":"Continuously performing the same task with human effort may not be perfect in all circumstances in terms of quality standards. By integrating real-time hardware control devices with automation equipment, one can achieve consistent and reliable product quality."
+    }
+  ]
+}

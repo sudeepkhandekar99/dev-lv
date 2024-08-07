@@ -1,0 +1,35 @@
+{
+  "navLinks": [
+    {
+      "to": "home",
+      "text": "Home"
+    },
+    {
+      "to": "services",
+      "text": "Services"
+    },
+    {
+      "to": "about",
+      "text": "About"
+    }
+  ],
+
+  "internalLinks": [
+    {
+      "to": "/brands",
+      "text": "Products"
+    },
+    {
+      "to": "/blog",
+      "text": "Projects"
+    },
+    {
+      "to": "/notable-projects",
+      "text": "Applications"
+    },
+    {
+      "to": "brochure",
+      "text": "Request Brochure"
+    }
+  ]
+}

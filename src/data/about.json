@@ -1,0 +1,66 @@
+{
+  "id": "",
+  "title": "Why Customers Choose Us",
+  "description": "KNOW US",
+
+    "mediumText": "Our Journey",
+  "smallText": "Leelavati Automation Pvt. Ltd.",
+  "paragraphs": [
+    "Is a leading system integrator and sole distributor of electronic and electrical components targeted for the markets of industrial automation, building automation and energy saving solutions all over India.",
+    "Since our inception in 1990, we have amassed unrivalled experience and knowledge. You can be confident that product support, service, and inventory are just a phone call or email away.",
+    "Leelavati Automation Pvt. Ltd. has established, documented, implemented, and maintained a quality management system to ensure that the products and services it provides conform to specified customer requirements, as well as to provide opportunities for continuous improvement in overall quality in accordance with ISO 9001:2015 International Standard requirements."
+  ],
+  "smallText1": "Our Strength",
+  "paragraphs1": [
+
+    "We are well-known for our excellent customer service, on-time delivery, and consistent quality material. We are rapidly expanding and are now looking to expand into other countries. Our product line reflects the cutting edge of high technology. We are constantly aware of market conditions and strive to provide the most recent products."
+  ]
+,
+
+  "internalLink": {
+    "to": "contact",
+    "text": "CONTACT US"
+  },
+  "events": [
+    {
+      "content":"Founded Leelavati Engineers 15th August 1990",
+      "date": "1990"
+    },
+    {
+      "content":"Partnered with Carlo Gavazzi.",
+      "date":"2000"
+    },
+    {
+      "content":"Leelavati Engineers joined by Takex - Japan, Panglobe - Taiwan and Xecro - Germany.",
+      "date": "2005"
+    },
+    {
+      "content":"Associated with Brands like SELET - Italy, Texelco - Italy, BannaTech - USA, BEA & Mayser - Germany",
+      "date": "2010"
+    },
+    {
+      "content":"Formerly known as Leelavati Engineers was changed to Leelavati Automation Pvt. Ltd.",
+      "date": "2011"
+    },
+    {
+      "content":"ISO 9001:2015 Certification, CRISIL SME Ratings on Credit worthiness.",
+      "date": "2014"
+    },   
+    {
+      "content":"Started Customised Industrial  and Home Automation.",
+      "date": "2019"
+    },
+    {
+      "content":"Leelavati Automation Pvt. Ltd. Introduced IO Link Sensors.",
+      "date": "2021"
+    },
+    {
+      "content":"Conducting workshops and training sessions for clients.",
+      "date": "2023"
+    },
+    {
+      "content":"",
+      "date": ""
+    }
+  ]
+}

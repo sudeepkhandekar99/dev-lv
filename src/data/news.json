@@ -1,0 +1,34 @@
+{
+  "id": "",
+  "title": "New Launch",
+  "description": "CHECK OUR NEW LAUNCH",
+  "articles": [
+    {
+      "to": "/",
+      "tags": ["WM20"],
+      "info": {
+        "title": "Power analyzer for three-phase systems",
+        "date": "",
+        "author": "CARLO GAVAZZI"
+      }
+    },
+    {
+      "to": "/",
+      "tags": ["WM15"],
+      "info": {
+        "title": "Power analyzer for three-phase systems",
+        "date": "",
+        "author": "CARLO GAVAZZI"
+      }
+    },
+    {
+      "to": "/",
+      "tags": ["LD33CEBI10xx"],
+      "info": {
+        "title": "Photoelectric Background suppression laser sensors with Time Of Flight",
+        "date": "",
+        "author": "CARLO GAVAZZI"
+      }
+    }
+  ]
+}

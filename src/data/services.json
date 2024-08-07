@@ -1,0 +1,28 @@
+{
+  "id": "",
+  "title": "SERVICES",
+  "description": "WHAT WE DO",
+  "servicesBoxes": [
+    {
+      "order": "I",
+      "servTitle": "Factory Automation",
+      "desc": "Streamline your manufacturing processes with cutting-edge by integrating advanced technologies & automation products like SENSORS, CONTROLS, SWITCHES, PLCs, HMIs, SCADA and IoT IOlink gateways. Our solutions enhance efficiency, quality control, material handling, inventory & people management. Achieve superior performance with minimal human intervention and elevate your factory's operational capabilities.",
+      "bottomSpace": true,
+      "to":"/factory-automation"
+    },
+    {
+      "order": "II",
+      "servTitle": "Building Automation ",
+      "desc": "Transform your building into a smart Building Management Systems (BMS) leverage IoT and networking technology to control HVAC, lighting, security, Access controls and many more. By converging these systems into a unified IT-managed network, you create a seamlessly connected, energy-efficient environment with Centralised control & monitoring processes.",
+      "bottomSpace": true,
+      "to":"/single"
+    },
+    {
+      "order": "III",
+      "servTitle": "Smart IoT Solution",
+      "desc": "Modernize your life with Smart IoT Automation. Intelligent devices with wired —ranging from sensors to equipment—are programmed for custom applications and can transmit data over various networks. Analyze and optimize your operations with real-time insights and connectivity, paving the way for a smarter world. Build smart solutions and step forward to AUTOMATE FUTURE.",
+      "bottomSpace": true,
+      "to":"/single"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "id": "",
+  "title": "CONTACT",
+  "description": "STAY IN TOUCH",
+
+  "paragrapgs": [
+    "Leelavati Automation Pvt. Ltd. is a leading system integrator and sole distributor of electronic and electrical components targeted for the markets of industrial automation, building automation and energy saving solutions all over India..",
+    ""
+  ],
+
+  "contactInfo": [
+    {
+      "title": "WEB",
+      "link": {
+        "to": "https://leelavatiautomation.com/",
+        "text": "leelavatiautomation.com"
+      }
+    },
+    {
+      "title": "ADDRESS",
+      "link": {
+        "to": "https://maps.app.goo.gl/DrNmkKUBFGaBGTeu7",
+        "text": "Mumbai, Maharashtra"
+      }
+    },
+    {
+      "title": "EMAIL",
+      "link": [
+        {
+          "to": "email:manoj@leelavati.com",
+          "text": "manoj@leelavati.com"
+        },
+        {
+          "to": "email:leelavatiautomation@gmail.com",
+          "text": "leelavatiautomation@gmail.com"
+        }
+      ]
+    },
+    {
+      "title": "PHONE",
+      "link": [
+        {
+          "to": "tel:9820062906",
+          "text": "+91 9820062906"
+        },
+        {
+          "to": "tel:9372355842",
+          "text": "+91 9372355842"
+        }
+      ]
+    },
+    {
+      "title": "HOURS",
+      "value": "10:00 am – 6:00 pm"
+    }
+  ],
+
+  "formspreeEndpoint": "https://formspree.io/f/xgebyqqz"
+}
