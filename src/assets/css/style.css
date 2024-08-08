@@ -55,7 +55,7 @@ version 1.1
 /* @import url('https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap'); */
 
 body {
-  font-family: "Karla", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 16px;
   line-height: 29px;
   font-weight: 400;
@@ -182,7 +182,10 @@ body a:hover {
 
 body p,
 body pre {
-  margin-bottom: 13px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  /* font-weight: 400; */
 }
 
 .site-wrapper img {
@@ -264,13 +267,13 @@ body pre {
   font-weight: 700;
   font-size: 46px;
   line-height: 133%;
-  color: #264549;
+  color: black;
 }
 
 .site-description {
   font-size: 24px;
   line-height: 150%;
-  color: #214b51;
+  color: black;
   margin-bottom: 0;
   padding-bottom: 30px;
 }
@@ -311,7 +314,7 @@ p.page-description {
 
 .medium-text {
   font-family: "Open Sans", sans-serif;
-  color: #031e23;
+  color: black;
   font-size: 42px;
   line-height: 112%;
   font-weight: 700;
@@ -349,7 +352,7 @@ p.page-description {
   line-height: 150%;
   font-weight: 500;
   word-break: break-word;
-  color: #264549;
+  color: black;
   letter-spacing: 5px;
   padding: 0;
 }
@@ -1076,11 +1079,12 @@ img.logo-icon {
   color: #fff;
   font-weight: 700;
   line-height: 130%;
-  font-style: italic;
 }
 
 .service-txt p {
   text-align: center;
+  font-weight: normal;
+  color: rgb(199, 199, 199);
 }
 
 .service-num {

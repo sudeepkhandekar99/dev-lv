@@ -19,7 +19,6 @@ function Services() {
           <h2 className="entry-title">{servicesData.title}</h2>
           <p className="page-description">{servicesData.description}</p>
         </div>
-
         <div className="content-wrapper">
           {servicesData.servicesBoxes.map((serv, i) => (
             <Fragment key={'service-box-' + i}>
@@ -34,9 +33,10 @@ function Services() {
                   className={`service-holder ${serv.bottomSpace ? 'bottom-50' : ''
                     }`}
                 >
-                  <p className="service-num">{serv.order}</p>
+                  {/* <p className="service-num">{serv.order}</p> */}
                   <div className="service-txt">
                     <h4>{serv.servTitle}</h4>
+                    <hr style={{ height: '1px', backgroundColor: '#E30016', border: 'none' }} />
                     <p>{serv.desc}</p>
                     <RouterLink to={serv.to} onClick={handleClick}>
                       <button className="read-more-button"> Read More </button>

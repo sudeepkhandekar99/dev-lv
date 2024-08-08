@@ -44,15 +44,15 @@ function Landing() {
         <HomeSection />
         <Services />
         <Video />
-        <Portfolio />
         <About />
-        {/* <Clients /> */}
-        <News />
         <Milestones />
+        <News />
+        <Clients />
+        <Portfolio />
         {/* <Skills /> */}
         {/* <Team /> */}
         {/* <Pricing /> */}
-        <Contact />
+        {/* <Contact /> */}
       </div>
     </>
   );

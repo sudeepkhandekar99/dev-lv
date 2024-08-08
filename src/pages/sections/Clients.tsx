@@ -1,72 +1,145 @@
-// Swiper Slider
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectFade, Navigation } from 'swiper';
+import { Autoplay } from 'swiper';
 import 'swiper/css';
-import 'swiper/css/effect-fade';
-import 'swiper/css/navigation';
+import 'swiper/css/autoplay';
 
-// Data
-import clientsData from '../../data/clients.json';
+// Sample Logo Images
+import reviewerImg1 from '../../assets/images/clients/PepsiCo_logo.svg';
+import reviewerImg2 from '../../assets/images/clients/Raymond_logo.svg';
+import reviewerImg3 from '../../assets/images/clients/Suzlon_Energy_logo.svg';
 
-// Images
-import reviewerImg1 from '../../assets/images/clients/quote_image_02.jpg';
-import reviewerImg2 from '../../assets/images/clients/quote_image_03.jpg';
-import reviewerImg3 from '../../assets/images/clients/quote_image_04.jpg';
-// --> Icons
-import quote from '../../assets/images/quotes_image.png';
-import navLeft from '../../assets/images/nav_left.png';
-import navRight from '../../assets/images/nav_right.png';
+// Data for clients' logos
+const clientsData = [
+  { logo: reviewerImg1 },
+  { logo: reviewerImg2 },
+  { logo: reviewerImg3 },
+  { logo: reviewerImg1 },
+  { logo: reviewerImg2 },
+  { logo: reviewerImg3 },
+  { logo: reviewerImg1 },
+  { logo: reviewerImg2 },
+  { logo: reviewerImg3 },
+  { logo: reviewerImg1 },
+  { logo: reviewerImg2 },
+  { logo: reviewerImg3 },
+  { logo: reviewerImg1 },
+  { logo: reviewerImg2 },
+  { logo: reviewerImg3 },
+  { logo: reviewerImg1 },
+  { logo: reviewerImg2 },
+  { logo: reviewerImg3 },
+  { logo: reviewerImg1 },
+  { logo: reviewerImg2 },
+  { logo: reviewerImg3 },
+  // Add more logos as needed
+];
 
-// ---------------
+const Clients: React.FC = () => {
+  // Inline styles for the component
+  const containerStyle: React.CSSProperties = {
+    padding: '20px 0',
+    position: 'relative',
+    overflow: 'hidden', // Prevent overflow
+    width: '100%', // Ensure full width
+    boxSizing: 'border-box', // Include padding and borders in the width and height
+    backgroundColor: '#1f1f1f', // Set background color
+  };
 
-function Clients() {
-  const images: string[] = [reviewerImg1, reviewerImg2, reviewerImg3];
+  const headingStyle: React.CSSProperties = {
+    fontSize: '2rem',
+    margin: '0',
+    padding: '20px 0', // Add padding for spacing above and below
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+  };
+
+  const slideStyle: React.CSSProperties = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
+  const imageStyle: React.CSSProperties = {
+    width: '100px', // Fixed width for consistency
+    height: 'auto', // Maintain aspect ratio
+    maxWidth: '100%', // Responsive behavior
+  };
 
   return (
     <div id="clients" className="section no-page-title">
       <div className="section-wrapper block content-1170 center-relative">
         <div className="content-wrapper">
-          <div className="text-slider-wrapper relative">
-            <div className="text-slider-header-quotes">
-              <img src={quote} />
-            </div>
+          <div className="logo-slider-wrapper" style={containerStyle}>
+            <h2 style={headingStyle}>Our Clients</h2>
+            <br />
             <Swiper
               loop={true}
-              effect={'fade'}
-              fadeEffect={{
-                crossFade: true,
+              autoplay={{ delay: 3000, disableOnInteraction: false }} // Auto-scroll every 2 seconds and always on
+              slidesPerView={1} // Show one logo at a time
+              spaceBetween={20} // Space between slides
+              breakpoints={{
+                320: { slidesPerView: 1 }, // 2 logos on small screens
+                768: { slidesPerView: 1 }, // 3 logos on medium screens
+                1024: { slidesPerView: 3 }, // 4 logos on large screens
               }}
-              navigation={{
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-              }}
-              modules={[EffectFade, Navigation]}
-              className="text-slider"
-              id="textSlider"
+              modules={[Autoplay]}
+              className="logo-slider"
+              id="logoSlider"
             >
-              {clientsData.reviews.map((reviewer, i) => (
+              {clientsData.map((client, i) => (
                 <SwiperSlide
-                  className="client-slide"
+                  className="logo-slide"
                   key={'clients-slide-' + i}
+                  style={slideStyle}
                 >
-                  <p className="text-slide-content">{reviewer.review}</p>
-                  <img className="text-slide-img" src={images[i]} alt="" />
-                  <div className="text-slide-info">
-                    <p className="text-slide-name">{reviewer.name}</p>
-                    <p className="text-slide-position">{reviewer.position}</p>
-                  </div>
+                  <img
+                    className="logo-img"
+                    src={client.logo}
+                    alt={`Client ${i + 1}`}
+                    style={imageStyle}
+                  />
                 </SwiperSlide>
               ))}
-              <div className="swiper-button-prev">
-                <img src={navLeft} />
-              </div>
-              <div className="swiper-button-next">
-                <img src={navRight} />
-              </div>
             </Swiper>
+            <br />
           </div>
         </div>
       </div>
+      <style>
+        {`
+          /* Hide default Swiper navigation arrows */
+          .swiper-button-next,
+          .swiper-button-prev {
+            display: none !important;
+          }
+          /* Ensure the logo slider does not overflow and occupies full width */
+          .logo-slider-wrapper {
+            overflow: hidden !important;
+            width: 100% !important;
+            margin: 0 !important;  /* Remove any margin */
+            padding: 0 !important; /* Remove any padding */
+            box-sizing: border-box !important; /* Include padding and borders in width and height */
+          }
+          .swiper-slide {
+            box-sizing: border-box;
+            padding: 0 !important; /* Remove padding if any */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          .logo-img {
+            max-width: 100px !important; /* Fixed size for logos */
+            height: auto !important; /* Maintain aspect ratio */
+          }
+          /* Ensure container does not cause overflow */
+          #clients {
+            overflow: hidden !important;
+            background-color: #1f1f1f !important; /* Background color for the section */
+          }
+        `}
+      </style>
     </div>
   );
 }

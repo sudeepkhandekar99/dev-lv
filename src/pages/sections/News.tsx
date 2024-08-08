@@ -57,23 +57,20 @@ function News() {
                   <ul>
                     {post.tags.map((tag, i) => (
                       <li key={tag + i}>
-                        <a href="#">{tag}</a>
+                        <a href="#">{tag} | by {post.info.author}</a>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <h4 className="entry-title">
+                <h4
+                  className="entry-title"
+                  style={{ fontSize: '1rem' }} // Adjust font size as needed
+                >
                   <RouterLink to={post.to} onClick={handleClick}>
                     {post.info.title}
                   </RouterLink>
                 </h4>
                 <span className="entry-date published">{post.info.date}</span>
-                <span className="by">by</span>
-                <span className="author-nickname">
-                  <a href="#" title="Posts by John Smith" rel="author">
-                    {post.info.author}
-                  </a>
-                </span>
               </article>
             ))}
 

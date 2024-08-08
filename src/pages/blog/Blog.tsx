@@ -38,7 +38,7 @@ function Blog() {
           >
             <div className="blog-item-wrapper">
               <div className="post-thumbnail">
-                <RouterLink to={`/blog-${article.id}`} onClick={handleClick}>
+                <RouterLink to={``} onClick={handleClick}>
                   <div className="post-thumbnail-image">
                     <img
                       src={article.image}
