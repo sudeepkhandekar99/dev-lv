@@ -1,56 +1,54 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard';
-import products from "../../data/products";
-import brands from "../../data/brands";
-import categories from "../../data/product-category";
-import subcategories from "../../data/product-subcategory";
+import filterData from "../../data/filter_one.json"; // Import the data
+import defaultImage from '../../assets/images/brands/Datalogic.jpg'; // Import the default image
+
+// Define types based on the actual structure of the data
+interface ProductCategoryItem {
+    Code: string;
+    'MAIN-Category': string;
+    'SUB-Category': string;
+    BRAND: string;
+    'Model number': string;
+    Stock: number;
+    Price: number;
+}
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
 
-function Products() {
-    const [brandFilters, setBrandFilters] = useState<string[]>([]);
-    const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
-    const [subcategoryFilters, setSubcategoryFilters] = useState<string[]>([]);
-    const [sensingDistanceFilter, setSensingDistanceFilter] = useState<string>('');
+const Products: React.FC = () => {
+    const [brandFilter, setBrandFilter] = useState<string>(''); // Single string instead of array
+    const [categoryFilter, setCategoryFilter] = useState<string>(''); // Single string instead of array
+    const [subcategoryFilter, setSubcategoryFilter] = useState<string>(''); // Single string instead of array
     const [searchTerm, setSearchTerm] = useState<string>('');
     const query = useQuery();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const brands = query.getAll('brand').map(b => b.toLowerCase());
-        const categories = query.getAll('category').map(c => c.toLowerCase());
-        const subcategories = query.getAll('subcategory').map(sc => sc.toLowerCase());
+        const brand = query.get('brand')?.toLowerCase() || '';
+        const category = query.get('category')?.toLowerCase() || '';
+        const subcategory = query.get('subcategory')?.toLowerCase() || '';
 
-        setBrandFilters(brands);
-        setCategoryFilters(categories);
-        setSubcategoryFilters(subcategories);
+        setBrandFilter(brand);
+        setCategoryFilter(category);
+        setSubcategoryFilter(subcategory);
     }, [query]);
 
-    const handleFilterChange = (filterSetter: React.Dispatch<React.SetStateAction<string[]>>, filterValues: string[], queryParam: string) => (event: ChangeEvent<HTMLSelectElement>) => {
+    const handleFilterChange = (filterSetter: React.Dispatch<React.SetStateAction<string>>, queryParam: string) => (event: ChangeEvent<HTMLSelectElement>) => {
         const value = event.target.value.toLowerCase();
-        let newFilters: string[];
-    
-        if (value === '') {
-            newFilters = [];
-        } else {
-            newFilters = filterValues.includes(value) ? filterValues.filter(f => f !== value) : [...filterValues, value];
-        }
-    
-        filterSetter(newFilters);
-    
+        filterSetter(value);
+
         const searchParams = new URLSearchParams(query.toString());
         searchParams.delete(queryParam);
-        newFilters.forEach(filter => {
-            if (filter !== '') {
-                searchParams.append(queryParam, filter);
-            }
-        });
-    
+        if (value !== '') {
+            searchParams.append(queryParam, value);
+        }
+
         navigate(`/products?${searchParams.toString()}`);
-    };    
+    };
 
     const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -61,22 +59,27 @@ function Products() {
     };
 
     const handleClearFilters = () => {
-        setBrandFilters([]);
-        setCategoryFilters([]);
-        setSubcategoryFilters([]);
-        setSensingDistanceFilter('');
+        setBrandFilter('');
+        setCategoryFilter('');
+        setSubcategoryFilter('');
         setSearchTerm('');
         navigate('/products');
-    };    
+    };
 
-    const filteredProducts = products.filter(product => {
+    // Ensure filterData is treated as ProductCategoryItem[]
+    const filteredProducts = (filterData as ProductCategoryItem[]).filter(product => {
         return (
-            (brandFilters.length === 0 || brandFilters.includes(product.brand.toLowerCase()) || brandFilters.includes('')) &&
-            (categoryFilters.length === 0 || categoryFilters.includes(product.category.toLowerCase()) || categoryFilters.includes('')) &&
-            (subcategoryFilters.length === 0 || subcategoryFilters.includes(product.subcategory.toLowerCase()) || subcategoryFilters.includes('')) &&
-            (searchTerm === '' || product.productName.toLowerCase().includes(searchTerm.toLowerCase()))
+            (brandFilter === '' || product.BRAND.toLowerCase() === brandFilter) &&
+            (categoryFilter === '' || product['MAIN-Category'].toLowerCase() === categoryFilter) &&
+            (subcategoryFilter === '' || product['SUB-Category'].toLowerCase() === subcategoryFilter) &&
+            (searchTerm === '' || product['Model number'].toLowerCase().includes(searchTerm.toLowerCase()))
         );
-    });    
+    });
+
+    // Extract unique values for dropdowns
+    const uniqueBrands = [...new Set(filterData.map(product => product.BRAND))];
+    const uniqueCategories = [...new Set(filterData.map(product => product['MAIN-Category']))];
+    const uniqueSubcategories = [...new Set(filterData.map(product => product['SUB-Category']))];
 
     return (
         <div className='product-main'>
@@ -84,27 +87,38 @@ function Products() {
 
             <div className='product-section'>
                 <div className='product-count'>
-                    <span>Showing {filteredProducts.length} of {products.length} results</span>
+                    <span>Showing {filteredProducts.length} of {filterData.length} results</span>
                 </div>
                 <div className='product-filter'>
                     <div>
-                        <select className='filter-dropdown' onChange={handleFilterChange(setBrandFilters, brandFilters, 'brand')} value={brandFilters}>
-                            <option value='' selected={brandFilters.length === 0}>All Brands</option>
-                            {brands.map((brand) => (
-                                <option key={brand.id} value={brand.name.toLowerCase()}>{brand.name}</option>
+                        <select
+                            className='filter-dropdown'
+                            onChange={handleFilterChange(setBrandFilter, 'brand')}
+                            value={brandFilter}
+                        >
+                            <option value=''>All Brands</option>
+                            {uniqueBrands.map((brand, index) => (
+                                <option key={index} value={brand.toLowerCase()}>{brand}</option>
                             ))}
                         </select>
-                        <select className='filter-dropdown' onChange={handleFilterChange(setCategoryFilters, categoryFilters, 'category')} value={categoryFilters}>
-                            <option value='' selected={categoryFilters.length === 0}>All Categories</option>
-                            {categories.map((category) => (
-                                <option key={category.id} value={category.name.toLowerCase()}>{category.name}</option>
+                        <select
+                            className='filter-dropdown'
+                            onChange={handleFilterChange(setCategoryFilter, 'category')}
+                            value={categoryFilter}
+                        >
+                            <option value=''>All Categories</option>
+                            {uniqueCategories.map((category, index) => (
+                                <option key={index} value={category.toLowerCase()}>{category}</option>
                             ))}
                         </select>
-
-                        <select className='filter-dropdown' onChange={handleFilterChange(setSubcategoryFilters, subcategoryFilters, 'subcategory')} value={subcategoryFilters}>
-                            <option value='' selected={subcategoryFilters.length === 0}>All Subcategories</option>
-                            {subcategories.map((subcategory) => (
-                                <option key={subcategory.id} value={subcategory.name.toLowerCase()}>{subcategory.name}</option>
+                        <select
+                            className='filter-dropdown'
+                            onChange={handleFilterChange(setSubcategoryFilter, 'subcategory')}
+                            value={subcategoryFilter}
+                        >
+                            <option value=''>All Subcategories</option>
+                            {uniqueSubcategories.map((subcategory, index) => (
+                                <option key={index} value={subcategory.toLowerCase()}>{subcategory}</option>
                             ))}
                         </select>
                     </div>
@@ -121,16 +135,16 @@ function Products() {
                     <button type="button" className="search-btn" onClick={handleSearchSubmit}>Search</button>
                 </div>
             </div>
-        
+
             <div className='product-list'>
                 {filteredProducts.map((product) => (
                     <ProductCard
-                        key={product.id}
-                        productName={product.productName}
-                        productDescription={product.productDescription}
-                        price={product.price}
-                        image={product.image}
-                        id={product.id}
+                        key={product.Code}
+                        productName={product['Model number']}
+                        productDescription={product.BRAND} // Assuming a simple description here
+                        price={product.Price.toString()} // Convert number to string
+                        image={defaultImage} // Use default image
+                        id={product.Code}
                     />
                 ))}
             </div>
