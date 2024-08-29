@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ProductCard from '../../components/ProductCard';
+import ProductCard from '../../components/ProductCard'; // Assuming ProductCard is a separate component
 import filterData from "../../data/filter_one.json"; // Import the data
 import defaultImage from '../../assets/images/brands/Datalogic.jpg'; // Import the default image
 
@@ -20,33 +20,33 @@ function useQuery() {
 }
 
 const Products: React.FC = () => {
-    const [brandFilter, setBrandFilter] = useState<string>(''); // Single string instead of array
-    const [categoryFilter, setCategoryFilter] = useState<string>(''); // Single string instead of array
-    const [subcategoryFilter, setSubcategoryFilter] = useState<string>(''); // Single string instead of array
+    const [brandFilter, setBrandFilter] = useState<string>(''); 
+    const [mainCategoryFilter, setMainCategoryFilter] = useState<string>(''); 
+    const [subCategoryFilter, setSubCategoryFilter] = useState<string>(''); 
     const [searchTerm, setSearchTerm] = useState<string>('');
     const query = useQuery();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const brand = query.get('brand')?.toLowerCase() || '';
-        const category = query.get('category')?.toLowerCase() || '';
-        const subcategory = query.get('subcategory')?.toLowerCase() || '';
+        // Get the filters from query parameters and update state
+        const brand = query.get('brand') || '';
+        const mainCategory = query.get('mainCategory') || '';
+        const subCategory = query.get('subCategory') || '';
+        const search = query.get('search') || '';
 
-        setBrandFilter(brand);
-        setCategoryFilter(category);
-        setSubcategoryFilter(subcategory);
+        // Set the state with the parameters
+        setBrandFilter(brand.toLowerCase());
+        setMainCategoryFilter(mainCategory.toLowerCase());
+        setSubCategoryFilter(subCategory.toLowerCase());
+        setSearchTerm(search.toLowerCase());
     }, [query]);
 
     const handleFilterChange = (filterSetter: React.Dispatch<React.SetStateAction<string>>, queryParam: string) => (event: ChangeEvent<HTMLSelectElement>) => {
-        const value = event.target.value.toLowerCase();
-        filterSetter(value);
+        const value = event.target.value;
+        filterSetter(value.toLowerCase());
 
         const searchParams = new URLSearchParams(query.toString());
-        searchParams.delete(queryParam);
-        if (value !== '') {
-            searchParams.append(queryParam, value);
-        }
-
+        searchParams.set(queryParam, value);
         navigate(`/products?${searchParams.toString()}`);
     };
 
@@ -55,31 +55,35 @@ const Products: React.FC = () => {
     };
 
     const handleSearchSubmit = () => {
-        console.log('Search submitted:', searchTerm);
+        const searchParams = new URLSearchParams(query.toString());
+        if (searchTerm) {
+            searchParams.set('search', searchTerm);
+        } else {
+            searchParams.delete('search');
+        }
+        navigate(`/products?${searchParams.toString()}`);
     };
 
     const handleClearFilters = () => {
         setBrandFilter('');
-        setCategoryFilter('');
-        setSubcategoryFilter('');
+        setMainCategoryFilter('');
+        setSubCategoryFilter('');
         setSearchTerm('');
         navigate('/products');
     };
 
-    // Ensure filterData is treated as ProductCategoryItem[]
     const filteredProducts = (filterData as ProductCategoryItem[]).filter(product => {
         return (
-            (brandFilter === '' || product.BRAND.toLowerCase() === brandFilter) &&
-            (categoryFilter === '' || product['MAIN-Category'].toLowerCase() === categoryFilter) &&
-            (subcategoryFilter === '' || product['SUB-Category'].toLowerCase() === subcategoryFilter) &&
-            (searchTerm === '' || product['Model number'].toLowerCase().includes(searchTerm.toLowerCase()))
+            (!brandFilter || product.BRAND.toLowerCase() === brandFilter) &&
+            (!mainCategoryFilter || product['MAIN-Category'].toLowerCase() === mainCategoryFilter) &&
+            (!subCategoryFilter || product['SUB-Category'].toLowerCase() === subCategoryFilter) &&
+            (!searchTerm || product['Model number'].toLowerCase().includes(searchTerm.toLowerCase()))
         );
     });
 
-    // Extract unique values for dropdowns
     const uniqueBrands = [...new Set(filterData.map(product => product.BRAND))];
-    const uniqueCategories = [...new Set(filterData.map(product => product['MAIN-Category']))];
-    const uniqueSubcategories = [...new Set(filterData.map(product => product['SUB-Category']))];
+    const uniqueMainCategories = [...new Set(filterData.map(product => product['MAIN-Category']))];
+    const uniqueSubCategories = [...new Set(filterData.map(product => product['SUB-Category']))];
 
     return (
         <div className='product-main'>
@@ -94,7 +98,7 @@ const Products: React.FC = () => {
                         <select
                             className='filter-dropdown'
                             onChange={handleFilterChange(setBrandFilter, 'brand')}
-                            value={brandFilter}
+                            value={brandFilter} // Ensure value is bound to state
                         >
                             <option value=''>All Brands</option>
                             {uniqueBrands.map((brand, index) => (
@@ -103,21 +107,21 @@ const Products: React.FC = () => {
                         </select>
                         <select
                             className='filter-dropdown'
-                            onChange={handleFilterChange(setCategoryFilter, 'category')}
-                            value={categoryFilter}
+                            onChange={handleFilterChange(setMainCategoryFilter, 'mainCategory')}
+                            value={mainCategoryFilter} // Ensure value is bound to state
                         >
                             <option value=''>All Categories</option>
-                            {uniqueCategories.map((category, index) => (
+                            {uniqueMainCategories.map((category, index) => (
                                 <option key={index} value={category.toLowerCase()}>{category}</option>
                             ))}
                         </select>
                         <select
                             className='filter-dropdown'
-                            onChange={handleFilterChange(setSubcategoryFilter, 'subcategory')}
-                            value={subcategoryFilter}
+                            onChange={handleFilterChange(setSubCategoryFilter, 'subCategory')}
+                            value={subCategoryFilter} // Ensure value is bound to state
                         >
                             <option value=''>All Subcategories</option>
-                            {uniqueSubcategories.map((subcategory, index) => (
+                            {uniqueSubCategories.map((subcategory, index) => (
                                 <option key={index} value={subcategory.toLowerCase()}>{subcategory}</option>
                             ))}
                         </select>
