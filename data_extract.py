@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import requests
 
 # Load the Excel file
 file_path = 'Leelavati_data.xlsx'
@@ -38,6 +39,21 @@ def generate_code(row):
 
 # Apply the function to generate the Code column
 df['Code'] = df.apply(generate_code, axis=1)
+
+def resolve_google_drive_url(url):
+    if url:  # Check if the URL is not empty
+        try:
+            response = requests.head(url, allow_redirects=True)
+            resolved_url = response.url
+            print(f"Original URL: {url} -> Resolved URL: {resolved_url}")
+            return resolved_url
+        except requests.RequestException as e:
+            print(f"Error resolving URL {url}: {e}")
+            return url
+    return url
+
+# Apply the URL resolution function to the Images column if it's not empty
+df['Images'] = df['Images'].apply(resolve_google_drive_url)
 
 # Convert each row of the DataFrame into a dictionary and store it in a list
 list_of_dicts = df.to_dict(orient='records')

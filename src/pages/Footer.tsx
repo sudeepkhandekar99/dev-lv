@@ -128,7 +128,7 @@ function Footer() {
             Mumbai 400088
           </p>
           <p>
-            GST NO.: <b>29GGGGG1314R9Z6</b>
+            GST NO.: <b>27AABCL9949B1ZC</b>
           </p>
           <a href="https://maps.app.goo.gl/DrNmkKUBFGaBGTeu7" target="_blank">
             <button className="icon-button">
