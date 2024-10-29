@@ -123,9 +123,9 @@ function Footer() {
         <div className="section-f1">
           <img src={mainLogo} alt="Main Logo" />
           <p>
-            Unit no. 809, The EPICENTRE <br /> Off Eastern Freeway, BEST Colony{" "}
-            <br /> Near Shivaj Chowk, Chembur East <br />
-            Mumbai 400088
+            Unit #809, The EPI Centre, <br /> Sattva & The Wadhwa Group,
+            <br /> Near Shivaj Chowk, Above D-Mart,<br />
+            Chembur East, Mumbai - 400088
           </p>
           <p>
             GST NO.: <b>27AABCL9949B1ZC</b>
