@@ -26,13 +26,13 @@ if 'Images' not in df.columns:
     df['Images'] = ''
 
 # Modify the Images column to convert Google Drive links to direct links
-def convert_drive_link(link):
-    if isinstance(link, str) and 'drive.google.com/file/d/' in link:
-        file_id = link.split('/d/')[1].split('/')[0]
-        return f'https://drive.google.com/uc?export=view&id={file_id}'
-    return link
+# def convert_drive_link(link):
+#     if isinstance(link, str) and 'drive.google.com/file/d/' in link:
+#         file_id = link.split('/d/')[1].split('/')[0]
+#         return f'https://drive.google.com/uc?export=view&id={file_id}'
+#     return link
 
-df['Images'] = df['Images'].apply(convert_drive_link)
+# df['Images'] = df['Images'].apply(convert_drive_link)
 
 # Function to generate the code
 def generate_code(row):
@@ -75,20 +75,20 @@ df = df.fillna('')
 
 
 # Function to resolve Google Drive URLs to the final redirect URL
-def resolve_google_drive_url(url):
-    if url:  # Check if the URL is not empty
-        try:
-            response = requests.head(url, allow_redirects=True)
-            resolved_url = response.url
-            print(f"Original URL: {url} -> Resolved URL: {resolved_url}")
-            return resolved_url
-        except requests.RequestException as e:
-            print(f"Error resolving URL {url}: {e}")
-            return url
-    return url
+# def resolve_google_drive_url(url):
+#     if url: 
+#         try:
+#             response = requests.head(url, allow_redirects=True)
+#             resolved_url = response.url
+#             print(f"Original URL: {url} -> Resolved URL: {resolved_url}")
+#             return resolved_url
+#         except requests.RequestException as e:
+#             print(f"Error resolving URL {url}: {e}")
+#             return url
+#     return url
 
 # Apply the URL resolution function to the IMAGES column if it's not empty
-df['Images'] = df['Images'].apply(resolve_google_drive_url)
+# df['Images'] = df['Images'].apply(resolve_google_drive_url)
 
 # Select the columns to include in the JSON
 df_json = df[['Code', 'MAIN-Category', 'SUB-Category', 'BRAND', 'Model number', 'Stock', 'Price', 'Housing_Size', 'Range', 'Output_Function', 'Supply_Voltage', 'Connection', 'Specific', 'Images']]

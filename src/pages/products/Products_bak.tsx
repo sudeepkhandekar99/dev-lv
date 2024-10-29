@@ -83,9 +83,9 @@ function Products() {
             <h1 className='product-header'>All Products</h1>
 
             <div className='product-section'>
-                <div className='product-count'>
+                {/* <div className='product-count'>
                     <span>Showing {filteredProducts.length} of {products.length} results</span>
-                </div>
+                </div> */}
                 <div className='product-filter'>
                     <div>
                         <select className='filter-dropdown' onChange={handleFilterChange(setBrandFilters, brandFilters, 'brand')} value={brandFilters}>
