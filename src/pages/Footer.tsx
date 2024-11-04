@@ -12,7 +12,9 @@ import { markdownToHTML } from "../utils/converter";
 
 // Images
 import logo from "../assets/images/logo2.png";
-import mainLogo from "../assets/images/Leelavati_Logo.png";
+import foot_logo from "../assets/images/logo_footer_new.png";
+// import mainLogo from "../assets/images/Leelavati_Logo.png";
+import mainLogo from "../assets/images/lv_logo.jpg";
 
 // Icons
 import {
@@ -125,7 +127,7 @@ function Footer() {
           <p>
             Unit #809, The EPI Centre, <br /> Sattva & The Wadhwa Group,
             <br /> Near Shivaj Chowk, Above D-Mart,<br />
-            Chembur East, Mumbai - 400088
+            Chembur East, Mumbai - 400071
           </p>
           <p>
             GST NO.: <b>27AABCL9949B1ZC</b>
