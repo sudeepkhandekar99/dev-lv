@@ -30,8 +30,8 @@ function Brands() {
         pressure
     };
 
-    // Extract unique MAIN-Category values
-    const mainCategories = [...new Set(filterData.map(item => item['MAIN-Category']))];
+    // Extract unique MAIN-Category values, filtering out any empty or undefined categories
+    const mainCategories = [...new Set(filterData.map(item => item['MAIN-Category']).filter(category => category))];
 
     return (
         <div className='product-main'>
