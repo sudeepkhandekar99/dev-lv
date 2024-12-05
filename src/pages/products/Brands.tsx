@@ -11,6 +11,7 @@ import relay from '../../assets/images/cat_images/relay.png';
 import safety from '../../assets/images/cat_images/safety.png';
 import sensor from '../../assets/images/cat_images/sensor.png';
 import pressure from '../../assets/images/cat_images/pressure.png'; // adding pressure for completeness
+import others from '../../assets/images/cat_images/Others.png'; // adding pressure for completeness
 
 function Brands() {
     const handleClick = () => {
@@ -27,7 +28,8 @@ function Brands() {
         config,
         controller,
         relay,
-        pressure
+        pressure,
+        others
     };
 
     // Extract unique MAIN-Category values, filtering out any empty or undefined categories
