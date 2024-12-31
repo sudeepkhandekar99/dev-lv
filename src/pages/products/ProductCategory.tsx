@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import filterData from "../../data/filter_one.json"; // Import the data
 import defaultImage from '../../assets/images/brands/Datalogic.jpg'; // Import the default image
 import Fiberoptic from '../../assets/images/sub_cat_images/Fiberoptic.png';
-import Pressure from '../../assets/images/sub_cat_images/Pressure.png';
+import Pressure from '../../assets/images/NoImageFound.jpg.png';
 import area from '../../assets/images/sub_cat_images/area.png';
 import capacitive from '../../assets/images/sub_cat_images/capacitive.png';
 import colormark from '../../assets/images/sub_cat_images/colormark.png';
