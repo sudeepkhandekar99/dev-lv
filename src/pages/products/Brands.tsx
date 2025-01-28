@@ -44,49 +44,12 @@ function Brands() {
 
   return (
     <div className="product-main">
-      <style>
-        {`
-          .brands-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 20px;
-          }
-
-          .brand-item {
-            text-align: center;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-          }
-
-          .brand-item:hover {
-            transform: scale(1.05);
-          }
-
-          .brand-item img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-            border-radius: 4px;
-          }
-
-          .brand-item p {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-          }
-        `}
-      </style>
-
       <h1 className="product-header">Explore Products by Category</h1>
       <div className="brands-grid">
         {categories.map((category) => (
           <div key={category.id} className="brand-item">
             <Link
-              to={`/product-category?main_cat=${category.main_category.toLowerCase()}`}
+              to={`/product-category?main_cat=${category.main_category}`}
               onClick={handleClick}
             >
               <img
