@@ -53,7 +53,7 @@ const Products: React.FC = () => {
     material: [],
   });
 
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Record<string, string>>({
     brand: '',
     main_cat: '',
     sub_cat: '',
