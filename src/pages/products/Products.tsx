@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import defaultImage from '../../assets/images/NoImageFound.jpg.png';
 
 const API_BASE_URL = 'https://api.leelavatiautomation.com';
@@ -34,6 +35,10 @@ interface DropdownData {
   material: string[];
 }
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const Products: React.FC = () => {
   const [dropdownData, setDropdownData] = useState<DropdownData>({
     brand: [],
@@ -64,6 +69,8 @@ const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const navigate = useNavigate();
+  const query = useQuery();
 
   useEffect(() => {
     const fetchDropdownData = async () => {
@@ -71,16 +78,16 @@ const Products: React.FC = () => {
         const response = await fetch(`${API_BASE_URL}/distinct-values`);
         const data = await response.json();
         setDropdownData({
-          brand: ['All', ...data.brands.filter(Boolean)],
-          main_cat: ['All', ...data.main_categories.filter(Boolean)],
-          sub_cat: ['All', ...data.sub_categories.filter(Boolean)],
-          housing_size: ['All', ...data.housing_sizes.filter(Boolean)],
-          function: ['All', ...data.functions.filter(Boolean)],
-          range: ['All', ...data.ranges.filter(Boolean)],
-          output: ['All', ...data.outputs.filter(Boolean)],
-          voltage: ['All', ...data.voltages.filter(Boolean)],
-          connection: ['All', ...data.connections.filter(Boolean)],
-          material: ['All', ...data.materials.filter(Boolean)],
+          brand: [query.get('brand') || 'All', ...data.brands.filter(Boolean),'All'],
+          main_cat: [query.get('main_cat') ||'All',  ...data.main_categories.filter(Boolean),'All'],
+          sub_cat: [query.get('sub_cat') || 'All', ...data.sub_categories.filter(Boolean),'All'],
+          housing_size: [query.get('housing_size') || 'All', ...data.housing_sizes.filter(Boolean),'All'],
+          function: [query.get('function') || 'All', ...data.functions.filter(Boolean),'All'],
+          range: [query.get('range') || 'All', ...data.ranges.filter(Boolean),'All'],
+          output: [query.get('output') ||'All', ...data.outputs.filter(Boolean),'All'],
+          voltage: [query.get('voltage') || 'All', ...data.voltages.filter(Boolean),'All'],
+          connection: [query.get('connection') || 'All', ...data.connections.filter(Boolean),'All'],
+          material: [query.get('material') || 'All', ...data.materials.filter(Boolean),'All'],
         });
       } catch (error) {
         console.error('Failed to fetch dropdown data:', error);
@@ -88,6 +95,32 @@ const Products: React.FC = () => {
     };
 
     fetchDropdownData();
+  }, [products]);
+
+  useEffect(() => {
+    const brand = query.get('brand') || '';
+    const mainCategory = query.get('main_cat') || '';
+    const subCategory = query.get('sub_cat') || '';
+
+    const initialFilters = {
+      brand: brand || '',
+      main_cat: mainCategory || '',
+      sub_cat: subCategory || '',
+      housing_size: '',
+      function: '',
+      range: '',
+      output: '',
+      voltage: '',
+      connection: '',
+      material: '',
+    };
+
+    setFilters(initialFilters);
+
+    if (brand || mainCategory || subCategory) {
+      fetchProducts(1, initialFilters);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchProducts = async (page: number, updatedFilters: Record<string, string> = filters) => {
@@ -112,20 +145,22 @@ const Products: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchProducts(currentPage);
-  }, [filters, currentPage]);
-
   const handleFilterChange = (key: string) => (event: ChangeEvent<HTMLSelectElement>) => {
     const newFilters = { ...filters, [key]: event.target.value === 'All' ? '' : event.target.value };
     setFilters(newFilters);
-    fetchProducts(1, newFilters); // Fetch products with updated filters on dropdown change
+    
+    // Update URL parameters while making the API call
+    const url = new URL(window.location.href);
+    url.searchParams.set(key, newFilters[key]);
+    navigate(url.pathname + '?' + url.searchParams.toString(), { replace: true });
+
+    fetchProducts(1, newFilters);
   };
 
   const handlePageChange = (newPage: number) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
-      fetchProducts(newPage); // Fetch products for the selected page
+      fetchProducts(newPage);
     }
   };
 
@@ -145,7 +180,7 @@ const Products: React.FC = () => {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 180px; /* Uniform size for dropdowns */
+            width: 180px;
           }
 
           .filter-label {
@@ -170,14 +205,13 @@ const Products: React.FC = () => {
             justify-content: center;
             align-items: center;
             gap: 15px;
-            margin: 20px 0 50px; /* Add margin below pagination for footer spacing */
+            margin: 20px 0 50px;
           }
         `}
       </style>
 
       <h1 className="product-header">All Products</h1>
 
-      {/* Filter Section */}
       <div className="product-section">
         <div className="product-filter">
           {Object.entries(dropdownData).map(([key, values]) => (
@@ -197,7 +231,7 @@ const Products: React.FC = () => {
               </label>
               <select
                 id={key}
-                value={filters[key as keyof typeof filters] as string}
+                value={filters[key as keyof typeof filters] || ''}
                 onChange={handleFilterChange(key)}
                 className="filter-dropdown"
               >
@@ -212,7 +246,6 @@ const Products: React.FC = () => {
         </div>
       </div>
 
-      {/* Product List */}
       <div className="product-list">
         {products.map((product) => (
           <div key={product.id} className="product-card">
@@ -238,21 +271,14 @@ const Products: React.FC = () => {
         ))}
       </div>
 
-      {/* Pagination */}
       <div className="pagination-holder">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
+        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
           Previous
         </button>
         <span>
           Page {currentPage} of {totalPages}
         </span>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
+        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
           Next
         </button>
       </div>

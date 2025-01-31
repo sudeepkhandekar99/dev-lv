@@ -70,7 +70,7 @@ const Brands: React.FC = () => {
           {brands.map((brand) => (
             <div key={brand.id} className="brand-item">
               <Link
-                to={`/products?brand=${brand.brand.toLowerCase()}&mainCategory=${mainCategory.toLowerCase()}&subCategory=${subCategory.toLowerCase()}`}
+                to={`/products?brand=${brand.brand.toLowerCase()}&main_cat=${mainCategory.toLowerCase()}&sub_cat=${subCategory.toLowerCase()}`}
                 onClick={handleClick}
               >
                 <img src={brand.aws_link} alt={brand.display_name} />
