@@ -69,6 +69,8 @@ const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [searchModel, setSearchModel] = useState('');
+  const [searchedProduct, setSearchedProduct] = useState<Product | null>(null);
   const navigate = useNavigate();
   const query = useQuery();
 
@@ -78,16 +80,16 @@ const Products: React.FC = () => {
         const response = await fetch(`${API_BASE_URL}/distinct-values`);
         const data = await response.json();
         setDropdownData({
-          brand: [query.get('brand') || 'All', ...data.brands.filter(Boolean),'All'],
-          main_cat: [query.get('main_cat') ||'All',  ...data.main_categories.filter(Boolean),'All'],
-          sub_cat: [query.get('sub_cat') || 'All', ...data.sub_categories.filter(Boolean),'All'],
-          housing_size: [query.get('housing_size') || 'All', ...data.housing_sizes.filter(Boolean),'All'],
-          function: [query.get('function') || 'All', ...data.functions.filter(Boolean),'All'],
-          range: [query.get('range') || 'All', ...data.ranges.filter(Boolean),'All'],
-          output: [query.get('output') ||'All', ...data.outputs.filter(Boolean),'All'],
-          voltage: [query.get('voltage') || 'All', ...data.voltages.filter(Boolean),'All'],
-          connection: [query.get('connection') || 'All', ...data.connections.filter(Boolean),'All'],
-          material: [query.get('material') || 'All', ...data.materials.filter(Boolean),'All'],
+          brand: [query.get('brand') || 'All', ...data.brands.filter(Boolean), 'All'],
+          main_cat: [query.get('main_cat') || 'All', ...data.main_categories.filter(Boolean), 'All'],
+          sub_cat: [query.get('sub_cat') || 'All', ...data.sub_categories.filter(Boolean), 'All'],
+          housing_size: [query.get('housing_size') || 'All', ...data.housing_sizes.filter(Boolean), 'All'],
+          function: [query.get('function') || 'All', ...data.functions.filter(Boolean), 'All'],
+          range: [query.get('range') || 'All', ...data.ranges.filter(Boolean), 'All'],
+          output: [query.get('output') || 'All', ...data.outputs.filter(Boolean), 'All'],
+          voltage: [query.get('voltage') || 'All', ...data.voltages.filter(Boolean), 'All'],
+          connection: [query.get('connection') || 'All', ...data.connections.filter(Boolean), 'All'],
+          material: [query.get('material') || 'All', ...data.materials.filter(Boolean), 'All'],
         });
       } catch (error) {
         console.error('Failed to fetch dropdown data:', error);
@@ -139,6 +141,7 @@ const Products: React.FC = () => {
       setProducts(data.products || []);
       setCurrentPage(data.page || 1);
       setTotalPages(data.total_pages || 1);
+      setSearchedProduct(null); // Reset searched product
     } catch (error) {
       console.error('Failed to fetch products:', error);
       setProducts([]);
@@ -148,7 +151,7 @@ const Products: React.FC = () => {
   const handleFilterChange = (key: string) => (event: ChangeEvent<HTMLSelectElement>) => {
     const newFilters = { ...filters, [key]: event.target.value === 'All' ? '' : event.target.value };
     setFilters(newFilters);
-    
+
     // Update URL parameters while making the API call
     const url = new URL(window.location.href);
     url.searchParams.set(key, newFilters[key]);
@@ -161,6 +164,19 @@ const Products: React.FC = () => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
       fetchProducts(newPage);
+    }
+  };
+
+  const handleSearchByModel = async () => {
+    if (!searchModel.trim()) return;
+    try {
+      const response = await fetch(`${API_BASE_URL}/search-by-model?model=${searchModel.trim()}`);
+      const data = await response.json();
+      setSearchedProduct(data);
+      setProducts([]); // Clear other products to display searched product
+    } catch (error) {
+      console.error('Failed to fetch product by model:', error);
+      setSearchedProduct(null);
     }
   };
 
@@ -207,10 +223,53 @@ const Products: React.FC = () => {
             gap: 15px;
             margin: 20px 0 50px;
           }
+
+          .model-search {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Space between input and button */
+        margin-bottom: 20px;
+      }
+
+      .search-input {
+        flex: 1; /* Takes up available space */
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .search-button {
+        padding: 8px 12px;
+        background-color: #ff7f7f;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .search-button:hover {
+        background-color: red;
+      }
         `}
       </style>
 
       <h1 className="product-header">All Products</h1>
+
+      {/* Search by Model Number */}
+      <div className="model-search">
+        <input
+          type="text"
+          placeholder="Search by Model Number"
+          value={searchModel}
+          onChange={(e) => setSearchModel(e.target.value)}
+          className="search-input"
+        />
+        <button onClick={handleSearchByModel} className="search-button">
+          Search
+        </button>
+      </div>
 
       <div className="product-section">
         <div className="product-filter">
@@ -247,31 +306,53 @@ const Products: React.FC = () => {
       </div>
 
       <div className="product-list">
-        {products.map((product) => (
-          <div key={product.id} className="product-card">
+        {searchedProduct ? (
+          <div className="product-card">
             <img
-              src={product.images || defaultImage}
-              alt={product.model || 'Product'}
+              src={searchedProduct.images || defaultImage}
+              alt={searchedProduct.model || 'Product'}
               onError={(e) => (e.currentTarget.src = defaultImage)}
             />
             <div className="product-details">
-              <h2>{product.model || 'N/A'}</h2>
-              <p><strong>Brand:</strong> {product.brand || 'N/A'}</p>
-              <p><strong>Main Category:</strong> {product.main_cat || 'N/A'}</p>
-              <p><strong>Sub Category:</strong> {product.sub_cat || 'N/A'}</p>
+              <h2>{searchedProduct.model || 'N/A'}</h2>
+              <p><strong>Brand:</strong> {searchedProduct.brand || 'N/A'}</p>
+              <p><strong>Main Category:</strong> {searchedProduct.main_cat || 'N/A'}</p>
+              <p><strong>Sub Category:</strong> {searchedProduct.sub_cat || 'N/A'}</p>
               <a
-                href={product.pdf || '#'}
-                target={product.pdf ? '_blank' : '_self'}
+                href={searchedProduct.pdf || '#'}
+                target={searchedProduct.pdf ? '_blank' : '_self'}
                 rel="noopener noreferrer"
               >
                 <button className="details-btn">Details</button>
               </a>
             </div>
           </div>
-        ))}
+        ) : (
+          products.map((product) => (
+            <div key={product.id} className="product-card">
+              <img
+                src={product.images || defaultImage}
+                alt={product.model || 'Product'}
+                onError={(e) => (e.currentTarget.src = defaultImage)}
+              />
+              <div className="product-details">
+                <h2>{product.model || 'N/A'}</h2>
+                <p><strong>Brand:</strong> {product.brand || 'N/A'}</p>
+                <p><strong>Main Category:</strong> {product.main_cat || 'N/A'}</p>
+                <p><strong>Sub Category:</strong> {product.sub_cat || 'N/A'}</p>
+                <a
+                  href={product.pdf || '#'}
+                  target={product.pdf ? '_blank' : '_self'}
+                  rel="noopener noreferrer"
+                >
+                  <button className="details-btn">Details</button>
+                </a>
+              </div>
+            </div>
+          ))
+        )}
       </div>
-
-      <div className="pagination-holder">
+      {!searchedProduct ? (<div className="pagination-holder">
         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
           Previous
         </button>
@@ -281,7 +362,7 @@ const Products: React.FC = () => {
         <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
           Next
         </button>
-      </div>
+      </div>) : (<div></div>)}
     </div>
   );
 };
