@@ -1,27 +1,40 @@
-// UI Components
+import React, { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-
-import articles from "../../data/articles";
-
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
+const API_URL = "https://api.leelavatiautomation.com/projects";
 
-// ---------------
+interface Article {
+  id: number;
+  main_title: string;
+  summary: string;
+  location: string;
+  subheading: string;
+  image_link: string;
+}
 
-function Blog() {
-  /**
-   * Returning window to (0 position) when going to single blog page
-   */
+const Blog: React.FC = () => {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        setArticles(data);
+      } catch (error) {
+        console.error("Failed to fetch articles:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
   const handleClick = () => {
     window.scroll(0, 0);
-  };
-
-  const styles = {
-    entryDate: {
-      fontFamily: 'Lustria, serif',
-      fontSize: '16px',
-      color: 'grey',
-    },
   };
 
   return (
@@ -31,61 +44,58 @@ function Blog() {
       style={{ marginTop: "100px", marginBottom: "120px" }}
     >
       <div className="blog-holder block center-relative">
-        {articles.map((article) => (
-          <article
-            key={article.id}
-            className="relative blog-item-holder center-relative has-post-thumbnail"
-          >
-            <div className="blog-item-wrapper">
-              <div className="post-thumbnail">
-                <RouterLink to={``} onClick={handleClick}>
-                  <div className="post-thumbnail-image">
-                    <img
-                      src={article.image}
-                      width="545px"
-                      height="700px"
-                      alt=""
-                    />
-                  </div>
-                </RouterLink>
-              </div>
-              <div className="entry-holder">
-                <h2 className="entry-title">
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : articles.length === 0 ? (
+          <p>No articles found.</p>
+        ) : (
+          articles.map((article) => (
+            <article
+              key={article.id}
+              className="relative blog-item-holder center-relative has-post-thumbnail"
+            >
+              <div className="blog-item-wrapper">
+                <div className="post-thumbnail">
                   <RouterLink to={``} onClick={handleClick}>
-                    {article.title}
-                  </RouterLink>
-                </h2>
-                <div className="entry-info">
-                  <div className="entry-info-left">
-                    <div className="entry-date published">
-                      <i className="fas fa-map-marker-alt" style={{ marginRight: '8px' }}></i>
-                      {article.date}
+                    <div className="post-thumbnail-image">
+                      <img
+                        src={article.image_link}
+                        width="545px"
+                        height="700px"
+                        alt={article.main_title}
+                      />
                     </div>
-                    <div className="entry-date published" style={styles.entryDate}>{article.category}</div>
-                    {/* <div className="cat-links">
-                      <ul>
-                        <li>
-                          <a href="#">{article.category}</a>
-                        </li>
-                      </ul>
-                    </div> */}
-                    {/* <div className="entry-date published">{article.date}</div> */}
-                  </div>
-                  <div className="excerpt">
-                    <p>{article.description}</p>
+                  </RouterLink>
+                </div>
+                <div className="entry-holder">
+                  <h2 className="entry-title">
+                    <RouterLink to={``} onClick={handleClick}>
+                      {article.main_title}
+                    </RouterLink>
+                  </h2>
+                  <div className="entry-info">
+                    <div className="entry-info-left">
+                      <div className="entry-date published">
+                        <i className="fas fa-map-marker-alt" style={{ marginRight: '8px' }}></i>
+                        {article.location}
+                      </div>
+                      <div className="entry-date published" style={{ fontFamily: 'Lustria, serif', fontSize: '16px', color: 'grey' }}>
+                        {article.subheading}
+                      </div>
+                    </div>
+                    <div className="excerpt">
+                      <p>{article.summary}</p>
+                    </div>
                   </div>
                 </div>
-                {/* <RouterLink className="button" to={`/blog-${article.id}`} onClick={handleClick}>
-                  READ MORE
-                </RouterLink> */}
+                <div className="clear"></div>
               </div>
-              <div className="clear"></div>
-            </div>
-          </article>
-        ))}
+            </article>
+          ))
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default Blog;
