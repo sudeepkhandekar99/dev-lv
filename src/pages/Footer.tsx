@@ -177,8 +177,8 @@ function Footer() {
           </div>
         </div>
         <div className="section-f3">
-          <span className="section-title">Message us</span>
-          <div className="contact-form">
+          <a href="https://airtable.com/apps2k8KL4pjvKmwd/pag2VPCZHv48GYp6u/form" target="_blank"><span className="section-title">Contact Us</span></a>
+          {/* <div className="contact-form">
             <form action="#" method="post" onSubmit={handleSubmit}>
               <p>
                 <input
@@ -236,7 +236,7 @@ function Footer() {
                 </p>
               )}
             </form>
-          </div>
+          </div> */}
           <div className="clear"></div>
         </div>
       </div>
