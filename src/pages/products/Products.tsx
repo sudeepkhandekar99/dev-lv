@@ -180,6 +180,47 @@ const Products: React.FC = () => {
     }
   };
 
+  const handleResetFilters = () => {
+    setSearchModel('');
+    setSearchedProduct(null);
+    setFilters({
+      brand: '',
+      main_cat: '',
+      sub_cat: '',
+      housing_size: '',
+      function: '',
+      range: '',
+      output: '',
+      voltage: '',
+      connection: '',
+      material: '',
+    });
+  
+    // Clear URL parameters
+    navigate('/products', { replace: true });
+  
+    // Fetch all products again
+    fetchProducts(1, {});
+  };
+  
+
+  useEffect(() => {
+    const model = query.get('model') || '';
+    if (model) {
+      setSearchModel(model);
+      fetch(`${API_BASE_URL}/search-by-model?model=${model}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setSearchedProduct(data);
+          setProducts([]); // Clear other products to display searched product
+        })
+        .catch((error) => {
+          console.error('Failed to fetch product by model:', error);
+          setSearchedProduct(null);
+        });
+    }
+  }, []);
+
   return (
     <div className="product-main">
       <style>
@@ -252,6 +293,20 @@ const Products: React.FC = () => {
       .search-button:hover {
         background-color: red;
       }
+
+      .reset-button {
+        padding: 8px 12px;
+        background-color:rgb(127, 174, 255);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .reset-button:hover {
+        background-color: blue;
+      }
         `}
       </style>
 
@@ -259,17 +314,20 @@ const Products: React.FC = () => {
 
       {/* Search by Model Number */}
       <div className="model-search">
-        <input
-          type="text"
-          placeholder="Search by Model Number"
-          value={searchModel}
-          onChange={(e) => setSearchModel(e.target.value)}
-          className="search-input"
-        />
-        <button onClick={handleSearchByModel} className="search-button">
-          Search
-        </button>
-      </div>
+      <input
+        type="text"
+        placeholder="Search by Model Number"
+        value={searchModel}
+        onChange={(e) => setSearchModel(e.target.value)}
+        className="search-input"
+      />
+      <button onClick={handleSearchByModel} className="search-button">
+        Search
+      </button>
+      <button onClick={handleResetFilters} className="reset-button">
+        Reset
+      </button>
+    </div>
 
       <div className="product-section">
         <div className="product-filter">
