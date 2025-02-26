@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 
 interface SubCategory {
   id: number;
@@ -17,9 +17,11 @@ function useQuery() {
 
 const ProductCategory: React.FC = () => {
   const query = useQuery();
+  const navigate = useNavigate();
   const [mainCategory, setMainCategory] = useState<string>('');
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [searchModel, setSearchModel] = useState<string>('');
 
   useEffect(() => {
     const category = query.get('main_cat');
@@ -49,12 +51,63 @@ const ProductCategory: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
+  const handleSearchByModel = () => {
+    if (!searchModel.trim()) return;
+    navigate(`/products?model=${searchModel.trim()}`);
+  };
+
   return (
     <div className="product-main">
       <style>
+        {`
+          .model-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+          }
+
+          .search-input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 300px;
+          }
+
+          .search-button {
+            padding: 8px 12px;
+            background-color: #ff7f7f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+          }
+
+          .search-button:hover {
+            background-color: red;
+          }
+        `}
       </style>
 
       <h1 className="product-header">Explore Sub-Categories</h1>
+
+      {/* Search by Model Number */}
+      <div className="model-search">
+        <input
+          type="text"
+          placeholder="Search by Model Number"
+          value={searchModel}
+          onChange={(e) => setSearchModel(e.target.value)}
+          className="search-input"
+        />
+        <button onClick={handleSearchByModel} className="search-button">
+          Search
+        </button>
+      </div>
+
 
       {isLoading ? (
         <p>Loading...</p>
