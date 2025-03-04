@@ -176,8 +176,16 @@ function Footer() {
             </a>
           </div>
         </div>
-        <div className="section-f3">
-          <a href="https://airtable.com/apps2k8KL4pjvKmwd/pag2VPCZHv48GYp6u/form" target="_blank"><span className="section-title">Contact Us</span></a>
+        <div className="section-f2">
+        {/* <div className="section-f3"> */}
+        <div className="footer-contact">
+            <img src={EmailSvg} alt="Email Icon" />
+            <div className="footer-email">
+            <a href="https://airtable.com/apps2k8KL4pjvKmwd/pag2VPCZHv48GYp6u/form" target="_blank">
+            <p className="">Write us a message</p></a>
+            </div>
+          </div>
+          
           {/* <div className="contact-form">
             <form action="#" method="post" onSubmit={handleSubmit}>
               <p>
