@@ -364,27 +364,30 @@ const Products: React.FC = () => {
       </div>
 
       <div className="product-list">
-        {searchedProduct ? (
-          <div className="product-card">
+      {searchedProduct ? (
+        searchedProduct.map((product) => (
+          <div key={product.id} className="product-card">
             <img
-              src={searchedProduct.images || defaultImage}
-              alt={searchedProduct.model || 'Product'}
+              src={product.images || defaultImage}
+              alt={product.model || 'Product'}
               onError={(e) => (e.currentTarget.src = defaultImage)}
             />
             <div className="product-details">
-              <h2>{searchedProduct.model || 'N/A'}</h2>
-              <p><strong>Brand:</strong> {searchedProduct.brand || 'N/A'}</p>
-              <p><strong>Main Category:</strong> {searchedProduct.main_cat || 'N/A'}</p>
-              <p><strong>Sub Category:</strong> {searchedProduct.sub_cat || 'N/A'}</p>
+              <h2>{product.model || 'N/A'}</h2>
+              <p><strong>Brand:</strong> {product.brand || 'N/A'}</p>
+              <p><strong>Main Category:</strong> {product.main_cat || 'N/A'}</p>
+              <p><strong>Sub Category:</strong> {product.sub_cat || 'N/A'}</p>
               <a
-                href={searchedProduct.pdf || '#'}
-                target={searchedProduct.pdf ? '_blank' : '_self'}
+                href={product.pdf || '#'}
+                target={product.pdf ? '_blank' : '_self'}
                 rel="noopener noreferrer"
               >
                 <button className="details-btn">Details</button>
               </a>
             </div>
           </div>
+        ))
+
         ) : (
           products.map((product) => (
             <div key={product.id} className="product-card">
