@@ -22,6 +22,10 @@ interface Product {
   pdf: string | null;
 }
 
+interface ProductSearchResponse {
+  products: Product[]; // Array of products
+}
+
 interface DropdownData {
   brand: string[];
   main_cat: string[];
@@ -70,7 +74,9 @@ const Products: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchModel, setSearchModel] = useState('');
-  const [searchedProduct, setSearchedProduct] = useState<Product | null>(null);
+  // const [searchedProduct, setSearchedProduct] = useState<Product | null>(null);
+  const [searchedProduct, setSearchedProduct] = useState<Product[]>([]);
+
   const navigate = useNavigate();
   const query = useQuery();
 
@@ -141,7 +147,7 @@ const Products: React.FC = () => {
       setProducts(data.products || []);
       setCurrentPage(data.page || 1);
       setTotalPages(data.total_pages || 1);
-      setSearchedProduct(null); // Reset searched product
+      setSearchedProduct([]); // Reset searched product
     } catch (error) {
       console.error('Failed to fetch products:', error);
       setProducts([]);
@@ -167,22 +173,37 @@ const Products: React.FC = () => {
     }
   };
 
+  // const handleSearchByModel = async () => {
+  //   if (!searchModel.trim()) return;
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/search-by-model?model=${searchModel.trim()}`);
+  //     const data = await response.json();
+  //     setSearchedProduct(data);
+  //     setProducts([]); // Clear other products to display searched product
+  //   } catch (error) {
+  //     console.error('Failed to fetch product by model:', error);
+  //     setSearchedProduct(null);
+  //   }
+  // };
   const handleSearchByModel = async () => {
     if (!searchModel.trim()) return;
+  
     try {
       const response = await fetch(`${API_BASE_URL}/search-by-model?model=${searchModel.trim()}`);
-      const data = await response.json();
-      setSearchedProduct(data);
-      setProducts([]); // Clear other products to display searched product
+      const data = await response.json(); // Use the new interface
+  
+      setSearchedProduct(data || []); // Set products array
+      setProducts([]); // Clear other products
     } catch (error) {
       console.error('Failed to fetch product by model:', error);
-      setSearchedProduct(null);
+      setSearchedProduct([]); // Reset to an empty array
     }
   };
+  
 
   const handleResetFilters = () => {
     setSearchModel('');
-    setSearchedProduct(null);
+    setSearchedProduct([]);
     setFilters({
       brand: '',
       main_cat: '',
@@ -216,7 +237,7 @@ const Products: React.FC = () => {
         })
         .catch((error) => {
           console.error('Failed to fetch product by model:', error);
-          setSearchedProduct(null);
+          setSearchedProduct([]);
         });
     }
   }, []);
@@ -364,8 +385,8 @@ const Products: React.FC = () => {
       </div>
 
       <div className="product-list">
-      {searchedProduct ? (
-        searchedProduct.map((product) => (
+      {searchedProduct && searchedProduct.length > 0 ? (
+        searchedProduct.map((product: Product) => (
           <div key={product.id} className="product-card">
             <img
               src={product.images || defaultImage}
@@ -413,7 +434,7 @@ const Products: React.FC = () => {
           ))
         )}
       </div>
-      {!searchedProduct ? (<div className="pagination-holder">
+      {(!searchedProduct) ? (<div className="pagination-holder">
         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
           Previous
         </button>
