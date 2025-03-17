@@ -434,7 +434,7 @@ const Products: React.FC = () => {
           ))
         )}
       </div>
-      {(!searchedProduct) ? (<div className="pagination-holder">
+      {!(searchedProduct && searchedProduct.length > 0) ? (<div className="pagination-holder">
         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
           Previous
         </button>
