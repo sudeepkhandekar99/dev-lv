@@ -78,6 +78,46 @@ const ClientsAndBrands = () => {
 
   return (
     <div>
+      <div id="brands" className="section no-page-title">
+        <div className="section-wrapper block content-1170 center-relative">
+          <div className="content-wrapper">
+            <div className="logo-slider-wrapper" style={containerStyle}>
+              <h2 style={headingStyle}>Our Brands</h2>
+              <br />
+              <Swiper
+                loop={true}
+                autoplay={{ delay: 2000, disableOnInteraction: false }}
+                slidesPerView={1}
+                spaceBetween={20}
+                breakpoints={{
+                  320: { slidesPerView: 1 },
+                  768: { slidesPerView: 1 },
+                  1024: { slidesPerView: 4 },
+                }}
+                modules={[Autoplay]}
+                className="logo-slider"
+                id="logoSlider"
+              >
+                {brandsData.map((brand) => (
+                  <SwiperSlide
+                    className="logo-slide"
+                    key={brand.id}
+                    style={slideStyle}
+                  >
+                    <img
+                      className="logo-img"
+                      src={brand.aws_link}
+                      alt={brand.display_name}
+                      style={imageStyle}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="clients" className="section no-page-title">
         <div className="section-wrapper block content-1170 center-relative">
           <div className="content-wrapper">
@@ -119,46 +159,7 @@ const ClientsAndBrands = () => {
         </div>
       </div>
 
-      <div id="brands" className="section no-page-title">
-        <div className="section-wrapper block content-1170 center-relative">
-          <div className="content-wrapper">
-            <div className="logo-slider-wrapper" style={containerStyle}>
-              <h2 style={headingStyle}>Our Brands</h2>
-              <br />
-              <Swiper
-                loop={true}
-                autoplay={{ delay: 2000, disableOnInteraction: false }}
-                slidesPerView={1}
-                spaceBetween={20}
-                breakpoints={{
-                  320: { slidesPerView: 1 },
-                  768: { slidesPerView: 1 },
-                  1024: { slidesPerView: 4 },
-                }}
-                modules={[Autoplay]}
-                className="logo-slider"
-                id="logoSlider"
-              >
-                {brandsData.map((brand) => (
-                  <SwiperSlide
-                    className="logo-slide"
-                    key={brand.id}
-                    style={slideStyle}
-                  >
-                    <img
-                      className="logo-img"
-                      src={brand.aws_link}
-                      alt={brand.display_name}
-                      style={imageStyle}
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-              <br />
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       <style>
         {`
