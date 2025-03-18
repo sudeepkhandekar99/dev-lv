@@ -10,8 +10,15 @@ interface Client {
   id: number;
 }
 
-const Clients = () => {
+interface Brand {
+  display_name: string;
+  aws_link: string;
+  id: number;
+}
+
+const ClientsAndBrands = () => {
   const [clientsData, setClientsData] = useState<Client[]>([]);
+  const [brandsData, setBrandsData] = useState<Brand[]>([]);
 
   useEffect(() => {
     fetch('https://api.leelavatiautomation.com/clients', {
@@ -24,6 +31,19 @@ const Clients = () => {
         setClientsData(data);
       })
       .catch((error) => console.error('Error fetching clients:', error));
+  }, []);
+
+  useEffect(() => {
+    fetch('https://api.leelavatiautomation.com/brands', {
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data: Brand[]) => {
+        setBrandsData(data);
+      })
+      .catch((error) => console.error('Error fetching brands:', error));
   }, []);
 
   const containerStyle: React.CSSProperties = {
@@ -57,45 +77,89 @@ const Clients = () => {
   };
 
   return (
-    <div id="clients" className="section no-page-title">
-      <div className="section-wrapper block content-1170 center-relative">
-        <div className="content-wrapper">
-          <div className="logo-slider-wrapper" style={containerStyle}>
-            <h2 style={headingStyle}>Our Clients</h2>
-            <br />
-            <Swiper
-              loop={true}
-              autoplay={{ delay: 2000, disableOnInteraction: false }}
-              slidesPerView={1}
-              spaceBetween={20}
-              breakpoints={{
-                320: { slidesPerView: 1 },
-                768: { slidesPerView: 1 },
-                1024: { slidesPerView: 4 },
-              }}
-              modules={[Autoplay]}
-              className="logo-slider"
-              id="logoSlider"
-            >
-              {clientsData.map((client) => (
-                <SwiperSlide
-                  className="logo-slide"
-                  key={client.id}
-                  style={slideStyle}
-                >
-                  <img
-                    className="logo-img"
-                    src={client.link}
-                    alt={client.name}
-                    style={imageStyle}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            <br />
+    <div>
+      <div id="clients" className="section no-page-title">
+        <div className="section-wrapper block content-1170 center-relative">
+          <div className="content-wrapper">
+            <div className="logo-slider-wrapper" style={containerStyle}>
+              <h2 style={headingStyle}>Our Clients</h2>
+              <br />
+              <Swiper
+                loop={true}
+                autoplay={{ delay: 2000, disableOnInteraction: false }}
+                slidesPerView={1}
+                spaceBetween={20}
+                breakpoints={{
+                  320: { slidesPerView: 1 },
+                  768: { slidesPerView: 1 },
+                  1024: { slidesPerView: 4 },
+                }}
+                modules={[Autoplay]}
+                className="logo-slider"
+                id="logoSlider"
+              >
+                {clientsData.map((client) => (
+                  <SwiperSlide
+                    className="logo-slide"
+                    key={client.id}
+                    style={slideStyle}
+                  >
+                    <img
+                      className="logo-img"
+                      src={client.link}
+                      alt={client.name}
+                      style={imageStyle}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              <br />
+            </div>
           </div>
         </div>
       </div>
+
+      <div id="brands" className="section no-page-title">
+        <div className="section-wrapper block content-1170 center-relative">
+          <div className="content-wrapper">
+            <div className="logo-slider-wrapper" style={containerStyle}>
+              <h2 style={headingStyle}>Our Brands</h2>
+              <br />
+              <Swiper
+                loop={true}
+                autoplay={{ delay: 2000, disableOnInteraction: false }}
+                slidesPerView={1}
+                spaceBetween={20}
+                breakpoints={{
+                  320: { slidesPerView: 1 },
+                  768: { slidesPerView: 1 },
+                  1024: { slidesPerView: 4 },
+                }}
+                modules={[Autoplay]}
+                className="logo-slider"
+                id="logoSlider"
+              >
+                {brandsData.map((brand) => (
+                  <SwiperSlide
+                    className="logo-slide"
+                    key={brand.id}
+                    style={slideStyle}
+                  >
+                    <img
+                      className="logo-img"
+                      src={brand.aws_link}
+                      alt={brand.display_name}
+                      style={imageStyle}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+              <br />
+            </div>
+          </div>
+        </div>
+      </div>
+
       <style>
         {`
           .swiper-button-next,
@@ -120,7 +184,7 @@ const Clients = () => {
             max-width: 100px !important;
             height: auto !important;
           }
-          #clients {
+          #clients, #brands {
             overflow: hidden !important;
             background-color: white !important;
           }
@@ -130,4 +194,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default ClientsAndBrands;
