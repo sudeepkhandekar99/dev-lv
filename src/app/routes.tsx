@@ -12,6 +12,9 @@ import Footer from '../pages/Footer';
 import Blog from '../pages/blog/Blog';
 import NotableProjects from '../pages/sections/ NotableProjects';
 import FactoryAutomation from '../pages/blog/FactoryAutomation';
+import First from '../pages/blog/First';
+import Second from '../pages/blog/Second';
+import Third from '../pages/blog/Third';
 import Products from '../pages/products/Products';
 import Brands from '../pages/products/Brands';
 import ProductCategory from '../pages/products/ProductCategory';
@@ -93,8 +96,16 @@ const routes: RoutesType[] = [
     element: renderWithNav(<NotableProjects />, false),
   },
   {
-    path: '/factory-automation',
-    element: renderWithNav(<FactoryAutomation />, false),
+    path: '/first',
+    element: renderWithNav(<First />, false),
+  },
+  {
+    path: '/second',
+    element: renderWithNav(<Second />, false),
+  },
+  {
+    path: '/third',
+    element: renderWithNav(<Third />, false),
   },
   {
     path: '/products',
