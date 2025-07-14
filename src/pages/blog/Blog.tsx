@@ -79,6 +79,7 @@ const Blog: React.FC = () => {
                         <i className="fas fa-map-marker-alt" style={{ marginRight: '8px' }}></i>
                         {article.location}
                       </div>
+                      <br></br>
                       <div className="entry-date published" style={{ fontFamily: 'Lustria, serif', fontSize: '16px', color: 'grey' }}>
                         {article.subheading}
                       </div>

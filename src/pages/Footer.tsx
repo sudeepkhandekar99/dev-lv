@@ -117,9 +117,9 @@ function Footer() {
   return (
     <footer className="footer">
       {/* <div className="footer-content center-relative"> */}
-      <div className="footer-logo">
+      {/* <div className="footer-logo">
         <img src={logo} alt="Leelavati Automation" />
-      </div>
+      </div> */}
 
       <div className="footer-container">
         <div className="section-f1">
